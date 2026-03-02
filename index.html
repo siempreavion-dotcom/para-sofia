@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Para Sofia ❤️</title>
+<style>
+body{
+    margin:0;
+    padding:0;
+    background:black;
+    overflow:hidden;
+    font-family:cursive;
+    text-align:center;
+    color:white;
+}
+
+.stars{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background: url('https://www.transparenttextures.com/patterns/stardust.png');
+}
+
+.heart-button{
+    margin-top:150px;
+    display:inline-block;
+    padding:50px 70px;
+    background:red;
+    color:white;
+    font-size:30px;
+    border-radius:50%;
+    cursor:pointer;
+    box-shadow:0 0 40px red;
+    transition:0.3s;
+}
+
+.heart-button:hover{
+    transform:scale(1.1);
+}
+
+.bottom-text{
+    position:absolute;
+    bottom:30px;
+    width:100%;
+    font-size:40px;
+    color:red;
+}
+
+.hidden-page{
+    display:none;
+    background:red;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    padding-top:60px;
+}
+
+.hidden-page h1{
+    font-size:60px;
+    color:white;
+}
+
+.hidden-page p{
+    font-size:28px;
+    color:white;
+}
+
+.photo{
+    margin-top:20px;
+    width:250px;
+    border-radius:20px;
+    box-shadow:0 0 30px white;
+}
+
+/* corazones flotando */
+.heart{
+    position:absolute;
+    color:red;
+    font-size:20px;
+    animation: float 5s linear infinite;
+}
+
+@keyframes float{
+    from{transform:translateY(100vh);}
+    to{transform:translateY(-10vh);}
+}
+</style>
+</head>
+<body>
+
+<div class="stars"></div>
+
+<!-- Música -->
+<audio autoplay loop>
+  <source src="musica.mp3" type="audio/mpeg">
+</audio>
+
+<div class="heart-button" onclick="showLove()">
+Click Here ❤️
+</div>
+
+<div class="bottom-text">
+Te amaré y cuidaré siempre de ti ❤️
+</div>
+
+<div class="hidden-page" id="lovePage">
+<h1>Te amo mucho ❤️</h1>
+<p>Eres mi felicidad, eres todo para mí.</p>
+
+<!-- FOTO -->
+<img src="foto.jpg" class="photo">
+
+</div>
+
+<script>
+function showLove(){
+    document.getElementById("lovePage").style.display = "block";
+}
+
+/* generar corazones */
+setInterval(function(){
+    var heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (Math.random() * 20 + 10) + "px";
+    document.body.appendChild(heart);
+
+    setTimeout(function(){
+        heart.remove();
+    },5000);
+
+},500);
+</script>
+
+</body>
+</html>
