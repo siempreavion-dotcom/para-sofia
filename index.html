@@ -29,11 +29,11 @@
         }
 
         .oso-img {
-            width: 150px; /* Osito animado */
+            width: 150px; /* Osito de la imagen principal */
         }
 
         #btn-click {
-            background-color: #ff0000; /* Botón rojo brillante */
+            background-color: #ff0000; /* Botón rojo */
             color: white;
             border: none;
             padding: 15px 35px;
@@ -49,7 +49,7 @@
 
         .footer-text {
             margin-top: 40px;
-            color: #ff3333; /* "Te amaré y cuidaré siempre de ti" */
+            color: #ff3333; /* Texto inferior romántico */
             font-size: 1.8rem;
             font-weight: bold;
             text-align: center;
@@ -62,7 +62,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #e60000; /* Fondo rojo sólido */
+            background-color: #e60000; /* Rojo sólido de la sorpresa */
             display: none; 
             flex-direction: column;
             align-items: center;
@@ -91,17 +91,17 @@
             width: 100%;
             max-width: 400px;
             border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4); /* Tu foto sofia.png */
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4); /* Tu imagen sofia.png */
         }
 
         .carta-amor {
             font-size: 1.2rem;
             line-height: 1.4;
-            font-style: italic; /* Tu carta personalizada */
+            font-style: italic; /* Tu mensaje personalizado */
         }
 
         .foto-corazon-as {
-            width: 120px; /* Corazón con iniciales */
+            width: 120px; /* Corazón A&S */
         }
 
         .close-btn {
@@ -115,20 +115,6 @@
             border: none;
         }
 
-        /* Animación de corazones flotantes */
-        .heart-particle {
-            position: absolute;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 20px;
-            pointer-events: none;
-            animation: moveHearts 4s linear infinite;
-        }
-
-        @keyframes moveHearts {
-            0% { transform: translateY(100vh) scale(0); opacity: 1; }
-            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
-        }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.9); }
             to { opacity: 1; transform: scale(1); }
@@ -138,7 +124,7 @@
 <body>
 
     <audio id="miMusica" loop>
-        <source src="Ed Sheeran - Perfect (Official Music Video) (mp3cut.net).mp3" type="audio/mpeg">
+        <source src="perfect.mp3" type="audio/mpeg">
     </audio>
 
     <div class="main-content">
@@ -149,21 +135,16 @@
 
     <div id="ventana-roja" class="modal-overlay">
         <button class="close-btn" id="btn-cerrar">&times;</button>
-        
         <div class="modal-content">
             <h1 class="modal-title">Te amo mucho</h1>
-            
             <img src="sofia.png" alt="A&S" class="foto-sofia">
-
             <div class="carta-amor">
                 <p>Quiero que sepas que te amo. Que sin importar donde y como estemos te amo con todo mi ser.</p>
                 <p>Eres mi lugar más lindo, Eres mi lugar donde puedo ser yo.</p>
                 <p>Te amo, No se cuanto dure esto, Pero quiere que dure mucho, quiero permanecer en tu vida. En tu mente y en tu corazón.</p>
                 <p>Eres la única persona que me hace sentir en un lugar tranquilo...🌹♥️</p>
             </div>
-
             <img src="https://media.shutterstock.com/image-vector/heart-letters-initials-600w-26154625.jpg" alt="A&S" class="foto-corazon-as">
-
             <p style="font-size: 1.4rem; font-weight: bold;">Eres mi felicidad eres todo para mi, te amo</p>
         </div>
     </div>
@@ -176,31 +157,10 @@
 
         btnAbrir.onclick = () => {
             ventana.style.display = "flex";
-            musica.play().catch(e => console.log("Error de audio:", e));
-            iniciarCorazones();
+            musica.play().catch(e => console.log("Revisa que el archivo se llame perfect.mp3"));
         };
 
-        btnCerrar.onclick = () => {
-            ventana.style.display = "none";
-        };
-
-        function iniciarCorazones() {
-            setInterval(() => {
-                if(ventana.style.display === "flex") crearCorazon();
-            }, 500);
-        }
-
-        function crearCorazon() {
-            const h = document.createElement('div');
-            h.innerHTML = "❤️";
-            h.className = "heart-particle";
-            h.style.left = Math.random() * 100 + "vw";
-            h.style.animationDuration = (Math.random() * 3 + 2) + "s";
-            ventana.appendChild(h);
-            setTimeout(() => h.remove(), 4000);
-        }
-
-        // Cerrar al hacer clic fuera del cuadro
+        btnCerrar.onclick = () => { ventana.style.display = "none"; };
         window.onclick = (e) => { if (e.target == ventana) ventana.style.display = "none"; }
     </script>
 </body>
