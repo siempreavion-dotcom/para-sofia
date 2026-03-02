@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Para Sofia ❤️</title>
+
 <style>
 body{
     margin:0;
@@ -14,6 +15,7 @@ body{
     color:white;
 }
 
+/* Fondo estrellas */
 .stars{
     position:fixed;
     width:100%;
@@ -21,16 +23,17 @@ body{
     background: url('https://www.transparenttextures.com/patterns/stardust.png');
 }
 
+/* Botón corazón */
 .heart-button{
-    margin-top:150px;
+    margin-top:180px;
     display:inline-block;
-    padding:50px 70px;
+    padding:60px 80px;
     background:red;
     color:white;
-    font-size:30px;
+    font-size:32px;
     border-radius:50%;
     cursor:pointer;
-    box-shadow:0 0 40px red;
+    box-shadow:0 0 50px red;
     transition:0.3s;
 }
 
@@ -38,48 +41,33 @@ body{
     transform:scale(1.1);
 }
 
+/* Texto abajo */
 .bottom-text{
     position:absolute;
     bottom:30px;
     width:100%;
-    font-size:40px;
+    font-size:38px;
     color:red;
 }
 
+/* Página oculta */
 .hidden-page{
     display:none;
-    background:red;
+    background:#b30000;
     position:fixed;
     top:0;
     left:0;
     width:100%;
     height:100%;
-    padding-top:60px;
+    padding-top:80px;
 }
 
-.hidden-page h1{
-    font-size:60px;
-    color:white;
-}
-
-.hidden-page p{
-    font-size:28px;
-    color:white;
-}
-
-.photo{
-    margin-top:20px;
-    width:250px;
-    border-radius:20px;
-    box-shadow:0 0 30px white;
-}
-
-/* corazones flotando */
+/* Corazones flotando */
 .heart{
     position:absolute;
-    color:red;
+    color:white;
     font-size:20px;
-    animation: float 5s linear infinite;
+    animation: float 6s linear infinite;
 }
 
 @keyframes float{
@@ -88,16 +76,17 @@ body{
 }
 </style>
 </head>
+
 <body>
 
 <div class="stars"></div>
 
 <!-- Música -->
-<audio autoplay loop>
-  <source src="musica.mp3" type="audio/mpeg">
+<audio id="music" loop>
+  <source src="perfect.mp3" type="audio/mpeg">
 </audio>
 
-<div class="heart-button" onclick="showLove()">
+<div class="heart-button" onclick="startLove()">
 Click Here ❤️
 </div>
 
@@ -106,20 +95,21 @@ Te amaré y cuidaré siempre de ti ❤️
 </div>
 
 <div class="hidden-page" id="lovePage">
-<h1>Te amo mucho ❤️</h1>
-<p>Eres mi felicidad, eres todo para mí.</p>
-
-<!-- FOTO -->
-<img src="foto.jpg" class="photo">
-
+<h1>Te amo mucho Sofia ❤️</h1>
+<p>
+Eres mi felicidad, eres mi lugar seguro,  
+mi persona favorita en este mundo.  
+Quiero estar contigo siempre.  
+</p>
 </div>
 
 <script>
-function showLove(){
+function startLove(){
     document.getElementById("lovePage").style.display = "block";
+    document.getElementById("music").play();
 }
 
-/* generar corazones */
+/* Corazones flotando */
 setInterval(function(){
     var heart = document.createElement("div");
     heart.className = "heart";
@@ -130,9 +120,9 @@ setInterval(function(){
 
     setTimeout(function(){
         heart.remove();
-    },5000);
+    },6000);
 
-},500);
+},400);
 </script>
 
 </body>
