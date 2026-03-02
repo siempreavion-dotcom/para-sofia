@@ -3,122 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para Sofía ❤️</title>
+    <title>Para Sofia</title>
     <style>
-        /* Estilos de fondo y tipografía */
+        /* --- ESTILOS DE LA PÁGINA PRINCIPAL (Basado en la Imagen 1) --- */
         body {
             margin: 0;
             padding: 0;
+            background-color: #050505; /* Fondo negro profundo */
+            background-image: url('fondo.png'); /* Carga tu imagen de estrellas aquí */
+            background-size: cover;
+            color: white;
+            font-family: 'Comic Sans MS', 'cursive', sans-serif; /* Tipografía para el texto inferior */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #050505; /* Negro profundo como en tu imagen */
-            color: white;
-            font-family: 'Comic Sans MS', 'cursive', sans-serif;
-            overflow: hidden;
-        }
-
-        /* Estrellas de fondo (opcional) */
-        .stars {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: url('https://www.transparenttextures.com/patterns/stardust.png');
-            z-index: 0;
-        }
-
-        /* El Botón Rojo Brillante */
-        #miBoton {
+            overflow: hidden; /* Evita que salgan barras de desplazamiento */
             position: relative;
-            z-index: 10;
-            padding: 20px 50px;
-            font-size: 2rem;
-            background-color: #ff0000;
-            color: white;
-            border: none;
-            border-radius: 100px; /* Forma ovalada */
-            cursor: pointer;
-            box-shadow: 0 0 40px #ff0000;
-            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        /* Contenedor central para alinear elementos horizontalmente */
+        .main-content {
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            gap: 50px; /* Espacio entre el osito, el botón y el corazón grande */
+            width: 80%;
+            max-width: 1000px;
         }
 
-        #miBoton:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 60px #ff4d4d;
+        /* Imagen del Osito */
+        .bear-image {
+            width: 250px; /* Ajusta el tamaño según tu imagen */
+            height: auto;
         }
 
-        /* Texto inferior */
-        .mensaje {
-            margin-top: 50px;
-            font-size: 1.8rem;
-            color: #ff3333;
-            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        /* --- El Botón de Clic (Basado en la Imagen 1) --- */
+        #main-button {
+            background-color: #e60000; /* Color rojo vibrante */
+            border: none;
+            color: white;
+            padding: 20px 40px;
+            font-size: 2.2rem;
+            font-family: 'Brush Script MT', cursive; /* Tipografía cursiva para el botón */
+            border-radius: 50px; /* Hace el botón ovalado */
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(230, 0, 0, 0.7); /* Brillo rojo */
+            transition: transform 0.2s, box-shadow 0.2s;
             z-index: 10;
-            text-align: center;
         }
 
-        /* Corazones flotantes */
-        .heart {
+        #main-button:hover {
+            transform: scale(1.05); /* Efecto de agrandado al pasar el ratón */
+            box-shadow: 0 0 50px rgba(230, 0, 0, 1);
+        }
+
+        /* Corazón Grande de Contorno (Imagen 1) */
+        .big-heart-outline {
+            width: 300px; /* Ajusta el tamaño */
+            height: auto;
+        }
+
+        /* Texto Inferior Romántico (Imagen 1) */
+        .footer-text {
             position: absolute;
-            color: #ff0000;
-            font-size: 20px;
-            user-select: none;
-            pointer-events: none;
-            animation: moveUp 3s linear forwards;
+            bottom: 40px;
+            font-size: 2rem;
+            color: #ff4d4d; /* Rojo más suave */
+            text-align: center;
+            width: 100%;
         }
 
-        @keyframes moveUp {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        /* --- ESTILOS DEL MODAL (Basado en la Imagen 2) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 0, 0, 0.95); /* Fondo rojo sólido */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100; /* Asegura que esté por encima de todo */
+            opacity: 0; /* Inicialmente oculto */
+            pointer-events: none; /* No permite clics cuando está oculto */
+            transition: opacity 0.5s ease; /* Efecto de desvanecimiento */
         }
+
+        /* Clase para mostrar el modal con JavaScript */
+        .modal-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            position: relative;
+            background-color: transparent; /* El fondo rojo lo da el overlay */
+            padding: 40px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Botón de cerrar (X) */
+        .close-button {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-size: 3rem;
+            color: white;
+            cursor: pointer;
+            background: none;
+            border: none;
+            z-index: 110;
+        }
+
+        /* Texto Superior del Modal */
+        .modal-title {
+            font-size: 3rem;
+            font-family: 'Brush Script MT', cursive;
+            color: white;
+            margin: 0;
+        }
+
+        /* Imagen Sorpresa del Modal (Corazón A&S) */
+        .modal-image {
+            max-width: 400px;
+            height: auto;
+            border-radius: 20px;
+        }
+
+        /* Texto Inferior del Modal */
+        .modal-message {
+            font-size: 1.8rem;
+            font-family: 'Brush Script MT', cursive;
+            color: white;
+            margin: 0;
+            max-width: 600px;
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="stars"></div>
+    <div class="main-content">
+        <img src="osito.png" alt="Osito lindo" class="bear-image">
+        
+        <button id="main-button">
+            Click Here ❤️
+        </button>
 
-    <button id="miBoton">
-        Click Here ❤️
-    </button>
+        <img src="path_al_corazon_grande.png" alt="" class="big-heart-outline">
+    </div>
 
-    <div class="mensaje">
+    <div class="footer-text">
         Te amaré y cuidaré siempre de ti ❤️
     </div>
 
-    <script>
-        const boton = document.getElementById('miBoton');
 
-        boton.addEventListener('click', () => {
-            // 1. Cambiar el texto del botón al hacer clic
-            boton.innerHTML = "Eres mi todo ✨";
+    <div class="modal-overlay" id="modal-surprise">
+        <div class="modal-content">
+            <button class="close-button" id="close-modal">&times;</button>
             
-            // 2. Crear una lluvia de corazones
-            for (let i = 0; i < 30; i++) {
-                crearCorazon();
-            }
+            <h2 class="modal-title">Te amo mucho</h2>
+            
+            <img src="imagen_sorpresa.png" alt="Sorpresa" class="modal-image">
+            
+            <p class="modal-message">Eres mi felicidad eres todo para mi, te amo</p>
+        </div>
+    </div>
 
-            // 3. Opcional: Redirigir después de 3 segundos
-            // setTimeout(() => { window.location.href = "TU_OTRO_LINK_AQUI"; }, 3000);
+
+    <script>
+        // Referencias a los elementos que vamos a usar
+        const mainButton = document.getElementById('main-button');
+        const modalSurprise = document.getElementById('modal-surprise');
+        const closeModalButton = document.getElementById('close-modal');
+
+        // Función para MOSTRAR el modal
+        mainButton.addEventListener('click', function() {
+            modalSurprise.classList.add('show'); // Añade la clase que lo hace visible
         });
 
-        function crearCorazon() {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
-            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            document.body.appendChild(heart);
+        // Función para OCULTAR el modal al hacer clic en la (X)
+        closeModalButton.addEventListener('click', function() {
+            modalSurprise.classList.remove('show'); // Quita la clase de visibilidad
+        });
 
-            setTimeout(() => {
-                heart.remove();
-            }, 3000);
-        }
+        // Opcional: Cerrar el modal si se hace clic FUERA del contenido
+        modalSurprise.addEventListener('click', function(event) {
+            // Si el clic fue en el fondo rojo (overlay) y no en el contenido...
+            if (event.target === modalSurprise) {
+                modalSurprise.classList.remove('show'); // ...cierra el modal.
+            }
+        });
     </script>
+
 </body>
 </html>
