@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Para Sofía ❤️</title>
     <style>
-        /* --- ESTILOS PÁGINA PRINCIPAL --- */
         body {
             margin: 0;
             padding: 0;
-            background-color: #050505; /* Fondo negro de tu sitio */
+            background-color: #050505;
             color: white;
             font-family: 'Comic Sans MS', cursive, sans-serif;
             display: flex;
@@ -20,99 +19,73 @@
             overflow: hidden;
         }
 
-        .main-content {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            z-index: 1;
-        }
-
-        .oso-img {
-            width: 150px; /* Osito de la imagen principal */
-        }
+        /* Pantalla Principal */
+        .main-container { text-align: center; }
 
         #btn-click {
-            background-color: #ff0000; /* Botón rojo */
+            background-color: #ff0000;
             color: white;
             border: none;
-            padding: 15px 35px;
-            font-size: 1.8rem;
+            padding: 20px 50px;
+            font-size: 2rem;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 0 25px #ff0000;
-            transition: transform 0.3s;
-            font-family: 'Brush Script MT', cursive;
+            box-shadow: 0 0 30px #ff0000;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-
-        #btn-click:hover { transform: scale(1.1); }
 
         .footer-text {
-            margin-top: 40px;
-            color: #ff3333; /* Texto inferior romántico */
+            margin-top: 50px;
+            color: #ff3333;
             font-size: 1.8rem;
             font-weight: bold;
-            text-align: center;
         }
 
-        /* --- VENTANA ROJA (MODAL) --- */
-        .modal-overlay {
+        /* Ventana Roja */
+        .modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #e60000; /* Rojo sólido de la sorpresa */
-            display: none; 
+            background-color: #e60000;
+            display: none;
             flex-direction: column;
             align-items: center;
             z-index: 100;
             overflow-y: auto;
-            padding: 30px 15px;
-            box-sizing: border-box;
+            padding: 40px 20px;
         }
 
         .modal-content {
-            max-width: 550px;
+            max-width: 500px;
             text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
             animation: fadeIn 0.8s ease;
-        }
-
-        .modal-title {
-            font-size: 3rem;
-            margin: 0; /* "Te amo mucho" */
         }
 
         .foto-sofia {
             width: 100%;
-            max-width: 400px;
             border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4); /* Tu imagen sofia.png */
+            margin: 20px 0;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
 
         .carta-amor {
             font-size: 1.2rem;
-            line-height: 1.4;
-            font-style: italic; /* Tu mensaje personalizado */
-        }
-
-        .foto-corazon-as {
-            width: 120px; /* Corazón A&S */
+            line-height: 1.5;
+            font-style: italic;
+            margin-bottom: 20px;
         }
 
         .close-btn {
             position: absolute;
-            top: 15px;
-            right: 20px;
+            top: 20px;
+            right: 30px;
             font-size: 2.5rem;
             cursor: pointer;
-            color: white;
-            background: none;
-            border: none;
         }
 
         @keyframes fadeIn {
@@ -123,29 +96,31 @@
 </head>
 <body>
 
-    <audio id="miMusica" loop>
+    <audio id="musicaPerfect" loop>
         <source src="perfect.mp3" type="audio/mpeg">
     </audio>
 
-    <div class="main-content">
-        <img src="https://media.tenor.com/7S_E6kO5m80AAAAi/mocha-bear.gif" alt="Oso" class="oso-img">
+    <div class="main-container">
         <button id="btn-click">Click Here ❤️</button>
+        <div class="footer-text">Te amaré y cuidaré siempre de ti ❤️</div>
     </div>
-    <div class="footer-text">Te amaré y cuidaré siempre de ti ❤️</div>
 
-    <div id="ventana-roja" class="modal-overlay">
-        <button class="close-btn" id="btn-cerrar">&times;</button>
+    <div id="ventana-roja" class="modal">
+        <span class="close-btn" id="btn-cerrar">&times;</span>
         <div class="modal-content">
-            <h1 class="modal-title">Te amo mucho</h1>
-            <img src="sofia.png" alt="A&S" class="foto-sofia">
+            <h1 style="font-size: 3rem; margin: 0;">Te amo mucho</h1>
+            
+            <img src="sofia.png" alt="Sofía" class="foto-sofia">
+
             <div class="carta-amor">
                 <p>Quiero que sepas que te amo. Que sin importar donde y como estemos te amo con todo mi ser.</p>
                 <p>Eres mi lugar más lindo, Eres mi lugar donde puedo ser yo.</p>
                 <p>Te amo, No se cuanto dure esto, Pero quiere que dure mucho, quiero permanecer en tu vida. En tu mente y en tu corazón.</p>
                 <p>Eres la única persona que me hace sentir en un lugar tranquilo...🌹♥️</p>
             </div>
-            <img src="https://media.shutterstock.com/image-vector/heart-letters-initials-600w-26154625.jpg" alt="A&S" class="foto-corazon-as">
-            <p style="font-size: 1.4rem; font-weight: bold;">Eres mi felicidad eres todo para mi, te amo</p>
+
+            <img src="https://media.shutterstock.com/image-vector/heart-letters-initials-600w-26154625.jpg" style="width: 120px;">
+            <p style="font-size: 1.4rem; font-weight: bold; margin-top: 10px;">Eres mi felicidad eres todo para mi, te amo</p>
         </div>
     </div>
 
@@ -153,15 +128,19 @@
         const btnAbrir = document.getElementById('btn-click');
         const btnCerrar = document.getElementById('btn-cerrar');
         const ventana = document.getElementById('ventana-roja');
-        const musica = document.getElementById('miMusica');
+        const miAudio = document.getElementById('musicaPerfect');
 
-        btnAbrir.onclick = () => {
+        btnAbrir.onclick = function() {
             ventana.style.display = "flex";
-            musica.play().catch(e => console.log("Revisa que el archivo se llame perfect.mp3"));
-        };
+            // Intentar reproducir la música
+            miAudio.play().catch(error => {
+                console.log("Error al reproducir: Revisa que el archivo se llame perfect.mp3 en GitHub");
+            });
+        }
 
-        btnCerrar.onclick = () => { ventana.style.display = "none"; };
-        window.onclick = (e) => { if (e.target == ventana) ventana.style.display = "none"; }
+        btnCerrar.onclick = function() {
+            ventana.style.display = "none";
+        }
     </script>
 </body>
 </html>
