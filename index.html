@@ -32,7 +32,6 @@
       outline: none;
     }
 
-    /* Marco decorativo */
     body::before {
       content: '';
       position: absolute;
@@ -58,7 +57,6 @@
       z-index: 10;
     }
 
-    /* Contenedor del mensaje personal */
     .mensaje-dedicatoria {
       position: absolute;
       bottom: 12vh;
@@ -89,14 +87,14 @@
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
-      height: 80px;
-      width: 80px;
-      background: rgba(255, 153, 204, 0.1);
+      height: 90px;
+      width: 90px;
+      background: rgba(255, 153, 204, 0.15);
       border: 2px solid #ff99cc;
       border-radius: 50%;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 0 15px rgba(255, 153, 204, 0.4);
+      box-shadow: 0 0 20px rgba(255, 153, 204, 0.5);
       z-index: 30;
       display: flex;
       align-items: center;
@@ -109,7 +107,7 @@
     }
 
     svg {
-      width: 35px;
+      width: 40px;
       fill: #ffccff;
     }
 
@@ -154,7 +152,6 @@
     attribute float aSpeed;
     varying vec3 vColor;
     varying vec2 vUv;
-
     void main() {
       float sign = 2.0 * (step(random, 0.5) - 0.5);
       float t = sign * mod(-uTime * aSpeed * 0.005 + 10.0 * aSpeed * aSpeed, M_PI);
@@ -184,46 +181,8 @@
     }
   </script>
 
-  <script type="x-shader/x-vertex" id="vertexShader1">
-    #define M_PI 3.1415926535897932384626433832795
-    uniform float uTime;
-    uniform float uSize;
-    attribute float aScale;
-    attribute vec3 aColor;
-    attribute float phi;
-    attribute float random;
-    attribute float random1;
-    varying vec3 vColor;
-    varying vec2 vUv;
-
-    void main() {
-      float angle = phi;
-      float t = mod((-uTime + 100.0) * 0.06 * random1 + random * 2.0 * M_PI, 2.0 * M_PI);
-      vec3 myOffset = vec3(5.85 * cos(angle * t), 2.0 * (t - M_PI), 3.0 * sin(angle * t / t));
-      vec4 modelPosition = modelMatrix * vec4(myOffset, 1.0);
-      vec4 viewPosition = viewMatrix * modelPosition;
-      viewPosition.xyz += position * aScale * uSize;
-      gl_Position = projectionMatrix * viewPosition;
-      vColor = aColor;
-      vUv = uv;
-    }
-  </script>
-
-  <script type="x-shader/x-fragment" id="fragmentShader1">
-    uniform sampler2D uTex;
-    varying vec3 vColor;
-    varying vec2 vUv;
-    void main() {
-      float strength = distance(vUv, vec2(0.5, 0.65));
-      strength = 1.0 - (strength * 2.0);
-      vec3 texture = texture2D(uTex, vUv).rgb;
-      gl_FragColor = vec4(texture * vColor * (strength + 0.3), 1.0);
-    }
-  </script>
-
   <script type="module">
     import * as THREE from "https://cdn.skypack.dev/three@0.135.0";
-    import { gsap } from "https://cdn.skypack.dev/gsap@3.8.0";
     import { GLTFLoader } from "https://cdn.skypack.dev/three@0.135.0/examples/jsm/loaders/GLTFLoader";
 
     class World {
@@ -231,10 +190,8 @@
         this.parameters = { count: 1500, max: 12.5 * Math.PI, a: 2, c: 4.5 };
         this.textureLoader = new THREE.TextureLoader();
         this.scene = new THREE.Scene();
-        this.scene.background = new THREE.Color(0x1a0d1a);
         this.clock = new THREE.Clock();
-        this.time = { current: 0, t0: 0, t1: 0, t: 0, frequency: 0.0005 };
-        this.angle = { x: 0, z: 0 };
+        this.time = { current: 0, frequency: 0.0005 };
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
         this.camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z);
         
@@ -242,7 +199,7 @@
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         this.renderer.setSize(window.innerWidth, window.innerHeight);
 
-        this.addToScene();
+        this.addHeart();
         this.addButton();
         this.listenToResize();
         this.loop();
@@ -254,38 +211,22 @@
 
         if (this.analyser && this.isRunning) {
           this.data = this.analyser.getAverageFrequency() / 2000;
-          this.angle.x += this.time.delta * 0.0006;
-          this.camera.position.x = Math.sin(this.angle.x) * this.parameters.a;
         }
 
         if (this.heartMaterial) {
-          this.heartMaterial.uniforms.uTime.value += this.time.delta * this.time.frequency * (1 + (this.data || 0) * 5);
+          this.heartMaterial.uniforms.uTime.value += this.time.delta * this.time.frequency * (1 + (this.data || 0) * 10);
         }
-        if (this.model) this.model.rotation.y -= 0.01;
         
         this.renderer.render(this.scene, this.camera);
         this.time.current = this.time.elapsed;
         requestAnimationFrame(this.loop.bind(this));
       }
 
-      async addModel() {
-        const loader = new GLTFLoader();
-        loader.load("https://assets.codepen.io/74321/heart.glb", (gltf) => {
-          this.model = gltf.scene.children[0];
-          this.model.scale.set(0.25, 0.25, 0.25);
-          this.model.material = new THREE.MeshMatcapMaterial({
-            matcap: this.textureLoader.load("https://assets.codepen.io/74321/3.png"),
-            color: "#ff3366"
-          });
-          this.scene.add(this.model);
-        });
-      }
-
       addHeart() {
         this.heartMaterial = new THREE.ShaderMaterial({
           fragmentShader: document.getElementById("fragmentShader").textContent,
           vertexShader: document.getElementById("vertexShader").textContent,
-          uniforms: { uTime: { value: 0 }, uSize: { value: 0.2 } },
+          uniforms: { uTime: { value: 0 }, uSize: { value: 0.23 } },
           blending: THREE.AdditiveBlending,
           transparent: true,
           depthWrite: false
@@ -295,18 +236,18 @@
         geo.attributes = plane.attributes;
         geo.index = plane.index;
         
-        const count = 2000;
+        const count = 2500;
         const scales = new Float32Array(count);
         const colors = new Float32Array(count * 3);
         const speeds = new Float32Array(count);
         const randoms = new Float32Array(count);
-        const colorChoices = ["#ff66cc", "#ff99ff", "#ffffff"];
+        const colorChoices = ["#ff66cc", "#ff99ff", "#ffffff", "#ff3366"];
 
         for (let i = 0; i < count; i++) {
-          scales[i] = Math.random() * 0.3;
+          scales[i] = Math.random() * 0.35;
           speeds[i] = Math.random() * this.parameters.max;
           randoms[i] = Math.random();
-          const c = new THREE.Color(colorChoices[Math.floor(Math.random() * 3)]);
+          const c = new THREE.Color(colorChoices[Math.floor(Math.random() * colorChoices.length)]);
           colors[i*3] = c.r; colors[i*3+1] = c.g; colors[i*3+2] = c.b;
         }
         geo.setAttribute("aScale", new THREE.InstancedBufferAttribute(scales, 1));
@@ -317,21 +258,6 @@
         this.scene.add(new THREE.Mesh(geo, this.heartMaterial));
       }
 
-      addSnow() {
-        this.snowMaterial = new THREE.ShaderMaterial({
-          fragmentShader: document.getElementById("fragmentShader1").textContent,
-          vertexShader: document.getElementById("vertexShader1").textContent,
-          uniforms: { uTime: { value: 0 }, uSize: { value: 0.3 }, uTex: { value: this.textureLoader.load("https://assets.codepen.io/74321/heart.png") } },
-          blending: THREE.AdditiveBlending, transparent: true, depthWrite: false
-        });
-        // Simplificado para el ejemplo
-      }
-
-      addToScene() {
-        this.addModel();
-        this.addHeart();
-      }
-
       addButton() {
         const btn = document.getElementById("play-music");
         btn.addEventListener("click", () => {
@@ -339,8 +265,12 @@
           const listener = new THREE.AudioListener();
           this.camera.add(listener);
           const sound = new THREE.Audio(listener);
-          new THREE.AudioLoader().load("https://assets.codepen.io/74321/ukulele.mp3", (buffer) => {
+          
+          // AQUÍ SE CARGA TU ARCHIVO DE ED SHEERAN
+          const audioLoader = new THREE.AudioLoader();
+          audioLoader.load("Ed Sheeran - Perfect (Official Music Video).mp3", (buffer) => {
             sound.setBuffer(buffer);
+            sound.setVolume(0.6);
             sound.play();
             this.analyser = new THREE.AudioAnalyser(sound, 32);
             this.isRunning = true;
