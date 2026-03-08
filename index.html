@@ -52,11 +52,10 @@
       font-weight: 400;
       font-size: max(2.5rem, 4vh);
       text-shadow: 0 0 10px rgba(255, 153, 204, 0.7);
-      opacity: 0;
-      animation: fadeIn 2s ease-in forwards 1s;
       z-index: 10;
     }
 
+    /* Mensaje oculto inicialmente */
     .mensaje-dedicatoria {
       position: absolute;
       bottom: 12vh;
@@ -64,19 +63,20 @@
       transform: translateX(-50%);
       width: 85%;
       max-width: 550px;
-      background: rgba(26, 13, 26, 0.5);
+      background: rgba(26, 13, 26, 0.6);
       backdrop-filter: blur(8px);
       padding: 25px;
       border-radius: 20px;
       border: 1px solid rgba(255, 153, 204, 0.2);
       text-align: center;
       z-index: 20;
-      opacity: 0;
-      animation: fadeIn 3s ease-in forwards 3s;
+      opacity: 0; 
+      transition: opacity 2.5s ease-in-out;
+      pointer-events: none;
     }
 
     .mensaje-dedicatoria p {
-      font-size: 1.6rem;
+      font-size: 1.4rem;
       line-height: 1.5;
       color: #ffe6f2;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -110,15 +110,6 @@
       width: 40px;
       fill: #ffccff;
     }
-
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
-
-    @media (max-width: 600px) {
-      .mensaje-dedicatoria p { font-size: 1.2rem; }
-      h1 { font-size: 2rem; }
-    }
   </style>
 </head>
 
@@ -127,27 +118,27 @@
   
   <h1 class="h1text">Feliz Día de la Mujer, Sofía 💗</h1>
 
-  <div class="mensaje-dedicatoria">
+  <div id="miMensaje" class="mensaje-dedicatoria">
     <p>
       Hoy 8 de marzo ❤️ <br>
-      Mi hermosa Sofia, quiero darte las gracias <br>
+      Mi hermosa Sofía, quiero darte las gracias <br>
       por llegar a mi vida, por ser una mujer <br>
       tan maravillosa, tan especial y tan única. <br><br>
       
       No sabes lo afortunado que me siento de tenerte. <br>
       Quiero felicitarte por ser esa mujer tan fuerte <br>
-      que poco a poco está realizando sus sueños <br>
+      que poco a poco está realizando sus sueños; <br>
       una mujer increíble que nunca se da por vencida. <br><br>
       
       Si me lo permites, me encantaría estar a tu lado <br>
       para celebrar cada uno de tus logros. <br>
       Sin duda, estás hecha para mí. <br><br>
       
-      Feliz día, amor de mi vida 💗
+      ¡Feliz día, amor de mi vida! 🌸
     </p>
   </div>
 
-  <button id="play-music" type="button" aria-label="Play music">
+  <button id="play-music" type="button">
     <svg viewBox="0 0 512 512">
       <path d="M470.38 1.51L150.41 96A32 32 0 0 0 128 126.51v261.41A139 139 0 0 0 96 384c-53 0-96 28.66-96 64s43 64 96 64 96-28.66 96-64V214.32l256-75v184.61a138.4 138.4 0 0 0-32-3.93c-53 0-96 28.66-96 64s43 64 96 64 96-28.65 96-64V32a32 32 0 0 0-41.62-30.49z" />
     </svg>
@@ -195,40 +186,32 @@
 
   <script type="module">
     import * as THREE from "https://cdn.skypack.dev/three@0.135.0";
-    import { GLTFLoader } from "https://cdn.skypack.dev/three@0.135.0/examples/jsm/loaders/GLTFLoader";
 
     class World {
       constructor({ canvas, cameraPosition }) {
-        this.parameters = { count: 1500, max: 12.5 * Math.PI, a: 2, c: 4.5 };
-        this.textureLoader = new THREE.TextureLoader();
+        this.parameters = { count: 1500, max: 12.5 * Math.PI };
         this.scene = new THREE.Scene();
         this.clock = new THREE.Clock();
         this.time = { current: 0, frequency: 0.0005 };
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
         this.camera.position.set(cameraPosition.x, cameraPosition.y, cameraPosition.z);
-        
         this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         this.renderer.setSize(window.innerWidth, window.innerHeight);
 
         this.addHeart();
         this.addButton();
-        this.listenToResize();
         this.loop();
       }
 
       loop() {
         this.time.elapsed = this.clock.getElapsedTime();
         this.time.delta = Math.min(60, (this.time.current - this.time.elapsed) * 1000);
-
         if (this.analyser && this.isRunning) {
           this.data = this.analyser.getAverageFrequency() / 2000;
         }
-
         if (this.heartMaterial) {
           this.heartMaterial.uniforms.uTime.value += this.time.delta * this.time.frequency * (1 + (this.data || 0) * 10);
         }
-        
         this.renderer.render(this.scene, this.camera);
         this.time.current = this.time.elapsed;
         requestAnimationFrame(this.loop.bind(this));
@@ -238,49 +221,46 @@
         this.heartMaterial = new THREE.ShaderMaterial({
           fragmentShader: document.getElementById("fragmentShader").textContent,
           vertexShader: document.getElementById("vertexShader").textContent,
-          uniforms: { uTime: { value: 0 }, uSize: { value: 0.23 } },
-          blending: THREE.AdditiveBlending,
-          transparent: true,
-          depthWrite: false
+          uniforms: { uTime: { value: 0 }, uSize: { value: 0.22 } },
+          blending: THREE.AdditiveBlending, transparent: true, depthWrite: false
         });
         const geo = new THREE.InstancedBufferGeometry();
         const plane = new THREE.PlaneGeometry(1, 1);
         geo.attributes = plane.attributes;
         geo.index = plane.index;
-        
-        const count = 2500;
+        const count = 2000;
         const scales = new Float32Array(count);
         const colors = new Float32Array(count * 3);
         const speeds = new Float32Array(count);
         const randoms = new Float32Array(count);
-        const colorChoices = ["#ff66cc", "#ff99ff", "#ffffff", "#ff3366"];
-
+        const colorChoices = ["#ff66cc", "#ff99ff", "#ffffff"];
         for (let i = 0; i < count; i++) {
-          scales[i] = Math.random() * 0.35;
+          scales[i] = Math.random() * 0.3;
           speeds[i] = Math.random() * this.parameters.max;
           randoms[i] = Math.random();
-          const c = new THREE.Color(colorChoices[Math.floor(Math.random() * colorChoices.length)]);
+          const c = new THREE.Color(colorChoices[Math.floor(Math.random() * 3)]);
           colors[i*3] = c.r; colors[i*3+1] = c.g; colors[i*3+2] = c.b;
         }
         geo.setAttribute("aScale", new THREE.InstancedBufferAttribute(scales, 1));
         geo.setAttribute("aSpeed", new THREE.InstancedBufferAttribute(speeds, 1));
         geo.setAttribute("aColor", new THREE.InstancedBufferAttribute(colors, 3));
         geo.setAttribute("random", new THREE.InstancedBufferAttribute(randoms, 1));
-        
         this.scene.add(new THREE.Mesh(geo, this.heartMaterial));
       }
 
       addButton() {
         const btn = document.getElementById("play-music");
+        const mensaje = document.getElementById("miMensaje");
+
         btn.addEventListener("click", () => {
-          btn.style.display = "none";
+          btn.style.display = "none"; 
+          mensaje.style.opacity = "1"; // Aparece el mensaje para Sofía
+          
           const listener = new THREE.AudioListener();
           this.camera.add(listener);
           const sound = new THREE.Audio(listener);
-          
-          // AQUÍ SE CARGA TU ARCHIVO DE ED SHEERAN
-          const audioLoader = new THREE.AudioLoader();
-          audioLoader.load("Ed Sheeran - Perfect (Official Music Video).mp3", (buffer) => {
+          // Usando el nombre exacto de tu archivo mp3
+          new THREE.AudioLoader().load("Ed Sheeran - Perfect (Official Music Video).mp3", (buffer) => {
             sound.setBuffer(buffer);
             sound.setVolume(0.6);
             sound.play();
@@ -289,18 +269,9 @@
           });
         });
       }
-
-      listenToResize() {
-        window.addEventListener("resize", () => {
-          this.camera.aspect = window.innerWidth / window.innerHeight;
-          this.camera.updateProjectionMatrix();
-          this.renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-      }
     }
 
     new World({ canvas: document.querySelector("canvas.webgl"), cameraPosition: { x: 0, y: 0, z: 4.5 } });
   </script>
 </body>
 </html>
-
